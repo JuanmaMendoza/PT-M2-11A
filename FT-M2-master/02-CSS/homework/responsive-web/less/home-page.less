@@ -1,4 +1,6 @@
 // Conteindo del Home
+@import "variables";
+@import "mixins";
 
 .home {
 
@@ -11,7 +13,13 @@
     p {
       padding:0 15px;
     }
-
+    img{
+      border-radius: 20px;
+      margin: 1% 2.5% 1% 2.5%;
+      @media @phone{
+        width: 95%;
+      }
+    }
   }
 
   .music-images {
@@ -24,6 +32,14 @@
       margin: 20px 2.5%;
       border-radius: 20px;
       height: 100%;
+    }
+    @media @phone{
+      .tecnologia, .ondas {
+        display: none;
+      }
+      .auricular{
+        width: 95%;
+      }
     }
   }
 
@@ -57,7 +73,15 @@
         margin-bottom: 26px;
       }
 
-      .btn {
+      .btn{
+        .btn(@btn-bg-color, white, 10px);
+        @media @phone{
+          display: block;
+          text-align: center;
+        }
+      }
+      @media @phone{
+        width: 100%;
       }
     }
 
@@ -70,6 +94,17 @@
         height: auto;
         border-radius: 10px;
       }
+      @media @phone{
+          width: 100%;
+          margin: 0;
+          padding: 1.5% 0;
+      }
+    }
+    @media @phone{
+      .flex(column-reverse , nowrap, flex-start, center);
+      width: 100%;
+      padding: 1.5% 2.5%;
+      margin-bottom: 7%;
     }
   }
 }
