@@ -10,6 +10,13 @@ var traverseDomAndCollectElements = function(matchFunc, startEl) {
 
   // TU CÓDIGO AQUÍ
   
+  if(matchFunc(startEl)) resultSet.push(startEl);
+  for (let i = 0; i < startEl.children.length; i++) {
+    let child = startEl.children[i];
+    let elementoEncontrado = traverseDomAndCollectElements(matchFunc , child)
+    resultSet = [...resultSet, ...elementoEncontrado];
+  }
+  return resultSet;
 };
 
 // Detecta y devuelve el tipo de selector
@@ -18,7 +25,17 @@ var traverseDomAndCollectElements = function(matchFunc, startEl) {
 
 var selectorTypeMatcher = function(selector) {
   // tu código aquí
-  
+  var stringSelector = selector.toString();
+  if(stringSelector.charAt(0) === '#'){
+    return 'id';
+  }
+  if(stringSelector.charAt(0) === '.'){
+    return 'class';
+  }
+  if(stringSelector.includes('.') && stringSelector.charAt(0) != '.'){
+    return 'tag.class';
+  }
+  return 'tag';
 };
 
 // NOTA SOBRE LA FUNCIÓN MATCH
@@ -30,13 +47,28 @@ var matchFunctionMaker = function(selector) {
   var selectorType = selectorTypeMatcher(selector);
   var matchFunction;
   if (selectorType === "id") { 
-   
+    matchFunction = function(selector1){
+      return ('#' + `${selector1.id.toLowerCase()}` === selector.toLowerCase())
+    }
   } else if (selectorType === "class") {
-    
+    matchFunction = function(selector1){
+      let clases = selector1.classList;
+      for (let i = 0; i < clases.length; i++) {
+        const element = clases[i];
+        if('.' + element === selector.toLowerCase()){
+          return true;
+        } 
+      } return false;
+    }
   } else if (selectorType === "tag.class") {
-    
+    matchFunction = function(selector1){
+      let [tagName, className] = selector.split('.');
+      return matchFunctionMaker(tagName)(selector1) && matchFunctionMaker('.' + className)(selector1);
+    }
   } else if (selectorType === "tag") {
-    
+    matchFunction = function(selector1){
+      return (selector1.tagName.toLowerCase() === selector.toLowerCase())
+    }
   }
   return matchFunction;
 };
