@@ -1,9 +1,14 @@
 import Card from './Card';
+import styled from 'styled-components';
 
+const DivCards = styled.div`
+display: flex;
+justify-content: space-evenly;
+`;
 export default function Cards(props) {
    const { characters } = props;
    let i = 0;
-   return <div>
+   return <DivCards>
       {characters.map((e) => (
       <Card
          name = {e.name}
@@ -14,5 +19,5 @@ export default function Cards(props) {
          key={i++}
       />   
          ))}
-   </div>;
+   </DivCards>;
 }
