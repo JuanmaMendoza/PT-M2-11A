@@ -1,3 +1,5 @@
+import { useState } from "react";
+
 const styledInput = {
    marginRight: '15px',
    padding: '10px',
@@ -16,10 +18,16 @@ const styledButton = {
 }
 
 export default function SearchBar(props) {
+   const {character, setCharacter} = useState(0);
+   const handleSearch = (event) => {
+      let {value} = event.target;
+      setCharacter(value);
+   };
+
    return (
       <div>
-         <input style={styledInput} type='search' />
-      <button style={styledButton} onClick={props.onSearch}>Agregar</button>
+         <input style={styledInput} type='search' onChange={handleSearch}/>
+      <button style={styledButton} onClick={() => props.onSearch(character)}>Agregar</button>
       </div>
    );
 }
