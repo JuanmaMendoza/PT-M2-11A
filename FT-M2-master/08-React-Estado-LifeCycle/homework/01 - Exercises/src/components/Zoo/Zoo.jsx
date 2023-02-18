@@ -1,55 +1,59 @@
-import React from 'react';
+import React, { useState, useEffect } from "react";
 // eslint-disable-next-line no-unused-vars
-import Animals from '../Animals/Animals';
+import Animals from "../Animals/Animals";
 // eslint-disable-next-line no-unused-vars
-import Species from '../Species/Species';
-import './Zoo.module.css';
+import Species from "../Species/Species";
+import "./Zoo.module.css";
 
 export default function Zoo() {
-   /* Escribe acá tu código */
+  /* Escribe acá tu código */
+  const [zoo, setZoo] = React.useState({
+    zooName: "",
+    animals: [],
+    species: [],
+    allAnimals: [],
+  });
 
-   const [zoo, setZoo] = React.useState({
-      zooName: '',
-      animals: [],
-      apecies: [],
-      allAnimals: [],
-   })
+  const handleInputChange = (evento) => {
+    let { value } = evento.target;
+    setZoo({ ...zoo, zooName: value });
+  };
 
-   const handleInputChange = (evento) => {
-      let { value } = evento.target;
-      setZoo({ ...zoo, zooName: value });
-   }
+  React.useEffect(() => {
+    fetch("http://localhost:3001/zoo")
+      .then((res) => res.json())
+      .then((data) =>
+        setZoo({
+          ...zoo,
+          animals: data.animals,
+          species: data.species,
+          allAnimals: data.animals,
+        })
+      )
+      .catch((error) => console.log(error));
+  }, []);
 
-   React.useEffect(() => {
-      fetch('http://localhost:3001/zoo')
-         .then((res) => res.json())
-         .then((data) =>
-            setZoo({
-               ...zoo,
-               animals: data.animals,
-               species: data.species,
-               allAnimals: data.animals,
-            })
-         )
-         .catch((error) => console.log(error));
-   }, [])
+  const handleSpecies = (evento) => {
+    let {value} = evento.target;
+    setZoo({...zoo, animals: zoo.allAnimals.filter((animal) => animal.specie === value)})
+  };
 
-   const handleSpecies = (evento) => {
-      let {value} =evento.target;
-      setZoo({...zoo, animals: zoo.allAnimals.filter((animal) => animal.specie === value)})
-   }
+  const handleAllSpecies = () => {
+    setZoo({...zoo, animals: zoo.allAnimals})
+  };
 
-   const handleAllSpecies = () => {
-      setZoo({...zoo, animals: zoo.allAnimals})
-   }
-
-   return (
-      <div>
-         <label htmlFor=''>Zoo name:</label>
-         <input type='text' value={zoo.zooName} onChange={handleInputChange} />
-         <h1>{zoo.zooName}</h1>
-         <Species species={zoo.species} handleSpecies={handleSpecies} handleAllSpecies={handleAllSpecies} />
-         <Animals animals = {zoo.animals}/>
-      </div>
-   );
+  return (
+    <div>
+      <label htmlFor="">Zoo Name:</label>
+      <input type="text" value={zoo.zooName} onChange={handleInputChange} />
+      <h1>{zoo.zooName}</h1>
+      <Species
+        species={zoo.species}
+        handleSpecies={handleSpecies}
+        handleAllSpecies={handleAllSpecies}
+      />
+      <Animals animals={zoo.animals} />
+    </div>
+  );
 }
+
