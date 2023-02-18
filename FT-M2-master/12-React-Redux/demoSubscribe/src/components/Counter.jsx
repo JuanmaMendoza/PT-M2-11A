@@ -11,43 +11,43 @@ import { bindActionCreators } from 'redux';
 //  - Valores: Acceder directamente al store desde el componente
 //  - Actions: Despachar directo desde el componente
 
-class Counter extends Component {
- constructor() {
-   super();
-   this.state = { count: 0 };
- }
+// class Counter extends Component {
+//  constructor() {
+//    super();
+//    this.state = { count: 0 };
+//  }
 
- componentDidMount() {
-   this.unsubscribeStore = store.subscribe(() => {
-     this.setState({
-       count: store.getState().count
-     });
-   });
- }
+//  componentDidMount() {
+//    this.unsubscribeStore = store.subscribe(() => {
+//      this.setState({
+//        count: store.getState().count
+//      });
+//    });
+//  }
 
- componentWillUnmount() {
-   this.unsubscribeStore();
- };
+//  componentWillUnmount() {
+//    this.unsubscribeStore();
+//  };
 
- render() {
-   return (
-     <p>
-       Clicked: {this.state.count} times
-       <button onClick={() => store.dispatch(increment())}>
-         +
-       </button>
-       <button onClick={() => store.dispatch(decrement())}>
-         -
-       </button>
-       <button onClick={() => store.dispatch(reset())}>
-         Reset
-       </button>
-     </p>
-   )
- }
-}
+//  render() {
+//    return (
+//      <p>
+//        Clicked: {this.state.count} times
+//        <button onClick={() => store.dispatch(increment())}>
+//          +
+//        </button>
+//        <button onClick={() => store.dispatch(decrement())}>
+//          -
+//        </button>
+//        <button onClick={() => store.dispatch(reset())}>
+//          Reset
+//        </button>
+//      </p>
+//    )
+//  }
+// }
 
-export default Counter;
+// export default Counter;
 
 // Opción 2A: Utilizar la función connect de 'react-redux'
 //  - Valores: Utilizar mapStateToProps
@@ -58,30 +58,30 @@ export default Counter;
 // accederlo desde las props.
 // Ejemplo: <button onClick={increment}>
 
-// class Counter extends Component {
-//  render() {
-//    return (
-//      <p>
-//        Clicked: {this.props.count} times
-//        <button onClick={this.props.increment}>
-//          +
-//        </button>
-//        <button onClick={this.props.decrement}>
-//          -
-//        </button>
-//        <button onClick={this.props.reset}>
-//          Reset
-//        </button>
-//      </p>
-//    )
-//  }
-// }
-//
-// function mapStateToProps(state) {
-//   return {
-//     count: state.count
-//   };
-// }
+class Counter extends Component {
+ render() {
+   return (
+     <p>
+       Clicked: {this.props.count} times
+       <button onClick={this.props.increment}>
+         +
+       </button>
+       <button onClick={this.props.decrement}>
+         -
+       </button>
+       <button onClick={this.props.reset}>
+         Reset
+       </button>
+     </p>
+   )
+ }
+}
+
+function mapStateToProps(state) {
+  return {
+    count: state.count
+  };
+}
 
 // export default connect(
 //   mapStateToProps,
@@ -93,20 +93,20 @@ export default Counter;
 
 // La parte del componente queda igual, solo modificaremos el connect:
 
-// function mapDispatchToProps(dispatch) {
-//     return {
-//     increment: function() {
-//       dispatch(increment());
-//     },
-//     decrement: function() {
-//       dispatch(decrement())
-//     },
-//     reset: function() {
-//       dispatch(reset());
-//     },
-//   }
-// }
-//
+function mapDispatchToProps(dispatch) {
+    return {
+    increment: function() {
+      dispatch(increment());
+    },
+    decrement: function() {
+      dispatch(decrement())
+    },
+    reset: function() {
+      dispatch(reset());
+    },
+  }
+}
+
 // export default connect(
 //   mapStateToProps,
 //   mapDispatchToProps
@@ -117,11 +117,11 @@ export default Counter;
 //  creators de una sin tener que especificar una por una. Para ello utilizaremos
 //  el método bindActionCreators de 'redux'
 
-// function mapDispatchToProps(dispatch) {
-//   return bindActionCreators(actionCreators, dispatch);
-// }
-//
-// export default connect(
-//   mapStateToProps,
-//   mapDispatchToProps
-// )(Counter);
+function mapDispatchToProps(dispatch) {
+  return bindActionCreators(actionCreators, dispatch);
+}
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Counter);

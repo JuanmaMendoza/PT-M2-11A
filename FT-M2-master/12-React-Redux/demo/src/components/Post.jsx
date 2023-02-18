@@ -8,7 +8,7 @@ const Post = ({ loading, post, fetchPost }) =>  (
   <div>
       <input name='id' />
       <button onClick={(e) => {
-        e.preventDefault();
+        // e.preventDefault();
         const value = document.querySelector('input').value;
         fetchPost(value);
       }} >
