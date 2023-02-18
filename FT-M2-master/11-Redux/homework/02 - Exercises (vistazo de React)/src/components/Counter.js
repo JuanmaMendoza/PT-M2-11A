@@ -6,10 +6,12 @@ class Counter extends Component {
   // Extra Credit
   incrementIfOdd = () => {
     //Implementar una función de incremento que sólo aumenta si el valor del contador es impar
+    if(this.props.count % 2 !== 0) this.props.increment();
   };
   // Extra Credit
   incrementAsync = () => {
     //  Implementar una función de incremento que aumenta después de esperar un segundo
+    setTimeout(this.props.increment, 1000);
   };
 
   render() {
@@ -19,26 +21,22 @@ class Counter extends Component {
       <p>
         Clickeado: {this.props.count} veces
         <button
-          onClick={() => {
-            /* Completar */
-          }}
+          onClick={this.props.increment}
         >
-          + {/* Incremeta */}
+          + 
         </button>
         <button
-          onClick={() => {
-            /* Completar */
-          }}
+          onClick={this.props.decrement}
         >
-          - {/* Decrementa */}
+          - 
         </button>
         {/* Si quieres hacer los extra credit puede descomentar las líneas de abajo */}
-        {/* <button onClick={this.incrementIfOdd}>
+        <button onClick={this.incrementIfOdd}>
                     incrementa si es impar
                 </button>
                 <button onClick={this.incrementAsync}>
                     Incrementa después de un segundo
-                </button>  */}
+                </button> 
       </p>
     );
   }
@@ -49,6 +47,14 @@ class Counter extends Component {
 // este componente recibe el estado completo.
 // Sin embargo, en una aplicación redux más compleja,
 // recibiría sólo las partes relevantes que necesita del objeto de estado.
+
+/*
+{
+  count: 1,
+  nombre: 'cande'
+}
+*/
+
 const mapStateToProps = (state) => {
   return {
     count: state.count,
@@ -57,6 +63,10 @@ const mapStateToProps = (state) => {
 
 // Se llama a la función de connect para que este componente conozca el resto de la arquitectura de redux.
 // Sin esto, este componente es sólo un componente tonto de React.
-//Pasamos todas las funciones que dependen de Redux, junto con el propio componente,
+// Pasamos todas las funciones que dependen de Redux, junto con el propio componente,
 // para que Redux se dé a conocer a este componente.
 export default connect(mapStateToProps, { increment, decrement })(Counter);
+
+// <Counter count={state.getState().contador} increment={store.dispatch(increment)} />
+
+// <Counter />
